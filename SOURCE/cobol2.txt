@@ -1,0 +1,81 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. COBOL2
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+
+       77  countr         PIC 99  VALUE ZERO.
+       77  string-size    PIC 999 VALUE ZERO.
+
+       01  strings.
+           05  string-1   PIC X(23) VALUE
+           'Good, Bad, and the Ugly'.
+
+           05  string-2   PIC X(30) VALUE
+           'All Quiet on the Western Front'.
+
+           05  string-3   PIC X(23)  VALUE
+           'This is our world now, '.
+
+           05  string-4   PIC X(43)  VALUE
+           'the world of the electron and the switch.  '.
+
+
+       PROCEDURE DIVISION.
+       Inspect string-4
+                   tallying countr for all " ".
+           Evaluate countr
+               When "01"
+                    Display 'Number is 100'
+               When "02"
+                    Display 'Number is 98'
+               When "03"
+                    Display 'Number is 96'
+               When "04"
+                    Display 'Number is 94'
+               When "05"
+                    Display 'Number is 92'
+               When "06"
+                    Display 'Number is 90'
+               When "07"
+                    Display 'Number is 60'
+               When "08"
+                    Display 'Number is 58'
+               When "09"
+                    Display 'Number is 56'
+               When "10"
+                    Display 'Number is 54'
+               When "11"
+                    Display 'Number is 52'
+               When "12"
+                    Display 'Number is 30'
+               When "13"
+                    Display 'Number is 28'
+               When "14"
+                    Display 'Number is 26'
+               When "15"
+                    Display 'Number is 24'
+               When "16"
+                    Display 'Number is 22'
+               When "17"
+                    Display 'Number is 20'
+               When "18"
+                    Display 'Number is 18'
+               When "19"
+                    Display 'Number is 16'
+               When "20"
+                    Display 'Number is 14'
+               When "21"
+                    Display 'Number is 12'
+               When "22"
+                    Display 'Number is 10'
+               When "23"
+                    Display 'Number is 8'
+               When "24"
+                    Display 'Number is 6'
+               When "25"
+                    Display 'Number is 4'
+               When "26"
+                    Display 'Number is 2'
+           End-Evaluate
+           STOP RUN.
+

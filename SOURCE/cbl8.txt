@@ -1,0 +1,48 @@
+//CBL8         JOB 1,NOTIFY=&SYSUID
+//COMPILE      EXEC IGYWCLG
+//COBOL.SYSIN  DD *
+       Identification Division.
+       Program-ID. CBL8.
+      *
+       Environment Division.
+       Input-Output Section.
+       File-control.
+           Select pgm_input  assign to MYINPUT.
+           Select pgm_output assign to MYOUT.
+      *
+       Data Division.
+       File Section.
+       fd  pgm_input record contains 80 characters recording mode f.
+        01 my_input.
+           05 num1              pic x(5).
+           05 num2              pic x(5).
+           05 filler            pic x(70).
+      *
+       fd  pgm_output record contains 80 characters recording mode f.
+        01 my_output            pic x(80).
+      *
+       Working-Storage Section.
+      *
+       01 myInput_packed.
+          05 num1_packed        pic 99999 comp-3.
+          05 num2_packed        pic 99999 comp-3.
+          05 num_total          pic 99999999 comp-3.
+      *
+       Procedure Division.
+      *
+           Open input pgm_input.
+           Open output pgm_output.
+           Read pgm_input.
+           Move num1 to num1_packed.
+           Move num2 to num2_packed.
+           Add  num1_packed num2_packed Giving num_total
+            on size error display "truncation occurred".
+           Move num_total to my_output.
+           Write pgm_output.
+           Close pgm_input.
+           Close pgm_output.
+           STOP RUN.
+//GO.MYINPUT   DD *
+0216401583
+//GO.MYOUTPUT  DD DISP=SHR,DSN=&SYSUID..CH4.OUTPUT(CBL8)
+

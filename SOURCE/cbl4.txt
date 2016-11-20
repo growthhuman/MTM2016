@@ -1,0 +1,21 @@
+//CBL4         JOB 1,NOTIFY=&SYSUID
+//COMPILE      EXEC IGYWCLG
+//COBOL.SYSIN  DD *
+       Identification Division.
+       Program-ID. CBL3.
+      *
+       Environment Division.
+      *
+       Data Division.
+       Working-Storage Section.
+       01 myInput.
+      *
+       Procedure Division.
+      *
+           Accept  myInput.
+           Display myInput.
+           STOP RUN.
+//GO.SYSIN     DD *
+The COBOL program ACCEPTed this line, then DISPLAYed the line
+//GO.SYSOUT    DD DISP=SHR,DSN=&SYSUID..CH4.OUTPUT(CBL4)
+

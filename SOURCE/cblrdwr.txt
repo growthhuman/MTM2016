@@ -1,0 +1,40 @@
+       IDENTIFICATION DIVISION.                                         00010002
+       PROGRAM-ID.    CBLRDWR.                                          00020002
+                                                                        00030002
+       ENVIRONMENT DIVISION.                                            00040002
+                                                                        00050002
+       INPUT-OUTPUT SECTION.                                            00060002
+       FILE-CONTROL.                                                    00070002
+           SELECT XYZ-IN   ASSIGN TO XYZIN.                             00080002
+           SELECT XYZ-OUT  ASSIGN TO XYZOUT.                            00090002
+                                                                        00100002
+       DATA DIVISION.                                                   00110002
+                                                                        00120002
+       FILE SECTION.                                                    00130002
+       FD  XYZ-IN RECORD CONTAINS 133 CHARACTERS RECORDING MODE F.      00140002
+       01  XYZ-REC-READ    PIC X(133).                                  00150002
+                                                                        00160002
+       FD  XYZ-OUT RECORD CONTAINS 133 CHARACTERS RECORDING MODE F.     00170002
+       01  XYZ-REC-WRITE   PIC X(133).                                  00180002
+                                                                        00190002
+       WORKING-STORAGE SECTION.                                         00200002
+       01 FLAGS.                                                        00210002
+           05 LASTREC           PIC X VALUE SPACE.                      00220002
+              88 LAST-REC       VALUE "N".                              00230002
+                                                                        00240002
+       PROCEDURE DIVISION.                                              00250002
+           OPEN INPUT  XYZ-IN.                                          00260002
+           OPEN OUTPUT XYZ-OUT.                                         00270002
+      *                                                                 00280002
+           PERFORM UNTIL LAST-REC                                       00290002
+             READ XYZ-INN                                               00300002
+              AT END SET LAST-REC TO TRUE                               00310002
+             END-READ                                                   00320002
+             WRITE XYZ-REC-WRITE FROM XYZ-REC-READ                      00321002
+           END-PERFORM.                                                 00322002
+      *                                                                 00323002
+           DISPLAY "All is well.  Cobol is easy".                       00324002
+           CLOSE XYZ-IN.                                                00325002
+           CLOSE XYZ-OUT.                                               00326002
+           STOP RUN.                                                    00327002
+

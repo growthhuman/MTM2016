@@ -1,0 +1,28 @@
+//CBL1         JOB 1,NOTIFY=&SYSUID
+//COMPILE      EXEC IGYWCLG
+//COBOL.SYSIN  DD *
+       Identification Division.
+      * used to identify program.
+      *
+       Program-ID. CBL1.
+      *
+       Environment Division.
+      * used to specify input and output files
+      *
+       Data Division.
+      * used to define the variables used in the program
+      *
+       Procedure Division.
+      * used for program logic processing
+      *
+           Display "cobol is very simple"
+           STOP RUN.
+//**************************************************************//
+//****                                                      ****//
+//**** Allocate data set to collect challenge 4 output      ****//
+//****                                                      ****//
+//**************************************************************//
+//ALLOC  EXEC PGM=IEFBR14
+//DD1    DD DISP=(,CATLG),DSN=&SYSUID..CH4.OUTPUT,STORCLAS=MTM,
+// DCB=(LRECL=80,RECFM=FB),DSNTYPE=LIBRARY,SPACE=(TRK,(5,1,1))
+

@@ -1,0 +1,14 @@
+//CBL2         JOB 1,NOTIFY=&SYSUID
+//COMPILE      EXEC IGYWCLG
+//COBOL.SYSIN  DD *
+       Identification Division.
+       Program-ID. CBL2.
+      *
+       Environment Division.
+      *
+       Data Division.
+      *
+       Procedure Division.
+       Display "cobol is very simple"
+       STOP RUN.
+

@@ -1,0 +1,73 @@
+import java.sql.*;
+
+public class worldFacts  {
+
+ // JDBC Driver name and Database URL
+ static final String JDBC_DRIVER = "com.ibm.db2.jcc.DB2Driver";
+ static final String DB_URL = "jdbc:db2://localhost:5035/DALLASB";
+
+ //  Database credentials
+ static final String USER = "sparky";
+ static final String PASS = "champ";
+
+ public static void main(String[] args) {
+
+ Connection conn = null;
+ Statement stmt = null;
+
+ try{
+
+    // Register JDBC Driver
+    Class.forName(JDBC_DRIVER);
+
+    // Open a connection
+    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+    // Execute a query
+    stmt = conn.createStatement();
+    String sql1 = "SELECT COUNT(*) AS COUNT "
+     + "FROM WC.CURRENCY ";
+    ResultSet rs1 = stmt.executeQuery(sql1);
+
+    // Extract data from result set
+    while(rs1.next()){
+
+       //DISPLAY VALUES
+       System.out.println("Number of World Currencies = "
+       + rs1.getInt("COUNT"));
+    }
+    //
+    // additional code for new SQL statement goes here
+    //
+
+       //DISPLAY VALUES
+       System.out.println("Number of World Universities = ");
+    rs1.close();
+ }catch(SQLException se){
+
+    //HANDLE ERRORS FOR JDBC
+    se.printStackTrace();
+ }catch(Exception e){
+
+    //HANDLE ERRORS FOR CLASS.FORNAME
+    e.printStackTrace();
+ }finally{
+
+    // Finally block used to close resources
+    try{
+       if(stmt!=null)
+          conn.close();
+    }catch(SQLException se){
+    }  // Do nothing
+
+    try{
+       if(conn!=null)
+          conn.close();
+    }catch(SQLException se){
+       se.printStackTrace();
+
+    }  // End Finally Try
+ }     // End Try
+}      // End Main
+}      // End Class worldFacts
+

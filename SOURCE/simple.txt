@@ -1,0 +1,6 @@
+       IDENTIFICATION DIVISION.                                         00010000
+       PROGRAM-ID. SIMPLE.                                              00020000
+       PROCEDURE DIVISION.                                              00030000
+           DISPLAY "COBOL IS SIMPLE".                                   00040001
+           STOP RUN.                                                    00050001
+

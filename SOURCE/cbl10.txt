@@ -1,0 +1,90 @@
+//CBL10        JOB 1,NOTIFY=&SYSUID
+//COMPILE      EXEC IGYWCLG
+//COBOL.SYSIN  DD *
+      * ------------------------------------
+       Identification Division.
+      * ------------------------------------
+       Program-ID.     Pay.
+      * ------------------------------------
+       Environment Division.
+      * ------------------------------------
+       Input-Output Section.
+      *
+      * ASSOCIATE INTERNAL FILE NAME WITH JCL DD NAME
+      *
+       File-Control.
+               Select employee-file-in  assign to PAYROLL.
+               Select employee-file-out assign to PAYSTUB.
+      * ------------------------------------
+       Data Division.
+      * ------------------------------------
+       file section.
+      *
+      * INPUT FILE DESCRIPTION
+      *
+       fd      employee-file-in
+                       label records standard
+                       record contains 30 characters
+                       recording mode f
+                       data record is employee-record-in.
+       01      employee-record-in.
+               02      employee-name-in        pic x(20).
+               02      employee-rate-in        pic 9(3)v99.
+               02      employee-hours-in       pic 9(3)v99.
+      *
+      * OUTPUT FILE DESCRIPTION
+      *
+       fd      employee-file-out
+                       label records omitted
+                       record contains 80 characters
+                       recording mode f
+                       data record is employee-record-out.
+       01      employee-record-out.
+               02      employee-name-out       pic x(20).
+               02      filler                  pic x(5).
+               02      employee-rate-out       pic 9(3).99.
+               02      filler                  pic x(5).
+               02      employee-hours-out      pic 9(3).99.
+               02      filler                  pic x(38).
+      *
+       Working-Storage section.
+      *
+       01      end-of-file             pic x value 'n'.
+
+      * ------------------------------------
+       Procedure Division.
+      * ---------
+       pay-logic.
+      * ---------
+               perform open-files.
+               perform process-payroll-record
+                       until end-of-file equal to 'n'.
+               perform close-files.
+               stop run.
+      * ----------
+       open-files.
+      * ----------
+               open    input employee-file-in
+                       output employee-file-out.
+               perform read-payroll-records.
+      * ----------------------
+       process-payroll-record.
+      * ----------------------
+               move employee-name-in to employee-name-out.
+               move employee-rate-in to employee-rate-out.
+               move employee-hours-in to employee-hours-out.
+               write employee-record-out.
+               perform read-payroll-records.
+      * -----------
+       close-files.
+      * -----------
+               close   employee-file-in
+                       employee-file-out.
+      * --------------------
+       read-payroll-records.
+      * --------------------
+               read employee-file-in
+                       at end move 'y' to end-of-file.
+//GO.PAYROLL   DD DISP=SHR,DSN=ZOS.PUBLIC.DIV.PAYROLL
+//GO.PAYSTUB   DD DISP=SHR,DSN=&SYSUID..CH4.OUTPUT(CBL10)
+

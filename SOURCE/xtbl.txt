@@ -1,0 +1,234 @@
+/* REXX */
+"FREE FI(indd)"
+/*------------------------------------------------------*/
+/*  Initialize variables                                */
+/*------------------------------------------------------*/
+fmt    = ''
+val    = ''
+dec    = ''
+hex    = ''
+bin    = ''
+ebcdic = ''
+ascii  = ''
+/*------------------------------------------------------*/
+/* Prompt for table conversation table search arguments */
+start_over:
+/*------------------------------------------------------*/
+clrscn
+say 'enter dec, hex, bin, ebcdic, ascii, all, help, joke, or end'
+parse pull fmt
+select
+ when fmt = 'end'    then EXIT 0
+ when fmt = 'dec'    then call enter_dec_value
+ when fmt = 'hex'    then call enter_hex_value
+ when fmt = 'bin'    then call enter_bin_value
+ when fmt = 'ebcdic' then call enter_ebcdic_value
+ when fmt = 'ascii'  then call enter_ascii_value
+ when fmt = 'all'    then call print_record_header
+ when fmt = 'help'   then
+           do
+            call print_help
+            call start_over
+           end
+ when fmt = 'joke'   then
+           do
+            clrscn
+            call tell_joke
+            call start_over
+           end
+ otherwise do
+            say 'please enter from list'
+            call start_over
+           end
+end
+/*------------------------------------------------------*/
+/* Access table                                         */
+/*------------------------------------------------------*/
+"ALLOC FI(indd)  DA('ZOS.PUBLIC.BINARY') SHR REUSE"
+"EXECIO 0 DISKR indd  (OPEN "
+/*------------------------------------------------------*/
+/* Read table entries into memory                       */
+/*------------------------------------------------------*/
+"EXECIO * DISKR indd  (STEM xtbl.   FINIS"
+do i=1 to xtbl.0
+ dec    = substr(xtbl.i,1,3,' ')
+ hex    = substr(xtbl.i,5,2,' ')
+ bin    = substr(xtbl.i,10,9.' ')
+ ebcdic = substr(xtbl.i,20,1,' ')
+   /*ebcdic = strip(ebcdic)*/
+ ascii  = substr(xtbl.i,30,1,' ')
+   /*ascii  = strip(ascii)*/
+  /*------------------------------------------------------*/
+  /* Does this record match the search requested?         */
+  /*------------------------------------------------------*/
+ if fmt = 'all'
+    then
+     say '   'dec'       'hex'      'bin'     'ebcdic'      'ascii
+    else call Is_this_the_wanted_record
+end
+"FREE FI(indd)"
+EXIT 0
+/*------------------------------------------------------*/
+Is_this_the_wanted_record:
+  select
+   when fmt = 'dec'
+    then do
+          if dec = val then call print_record
+         end
+   when fmt = 'hex'
+    then do
+          if hex = val then call print_record
+         end
+   when fmt = 'bin'
+    then do
+          if bin = val then call print_record
+         end
+   when fmt = 'ebcdic'
+    then do
+          if ebcdic = val then call print_record
+         end
+   when fmt = 'ascii'
+    then do
+          if ascii = val then call print_record
+         end
+   otherwise nop
+  end
+return
+/*------------------------------------------------------*/
+enter_dec_value:
+say 'enter Decimal value between 0 and 255'
+parse pull val
+return
+/*------------------------------------------------------*/
+enter_hex_value:
+say 'enter 2 digit Hexadecimal value between 00 and FF'
+parse pull hexval
+val = translate(hexval)
+return
+/*------------------------------------------------------*/
+enter_bin_value:
+say 'enter binary value - valid ranges are'
+say '0000 0000  to  1111 1111'
+parse pull val
+return
+/*------------------------------------------------------*/
+enter_ebcdic_value:
+say 'Enter a single alphanumeric or special character'
+say ' Note: Case matters when entering alphabetic character'
+parse pull val
+return
+/*------------------------------------------------------*/
+enter_ascii_value:
+say 'Enter a single alphanumeric or special character'
+say ' Note: Case matters when entering alphabetic character'
+parse pull val
+return
+/*------------------------------------------------------*/
+print_record:
+call print_record_header
+say '   'dec'       'hex'      'bin'     'ebcdic'      'ascii
+EXIT 0
+/*------------------------------------------------------*/
+/* Write the header to screen                           */
+/*------------------------------------------------------*/
+print_record_header:
+clrscn
+say
+say '---------------------------------------------------'
+say '   Character Format Representation Table           '
+say '---------------------------------------------------'
+say
+say ' Decimal Hexadecimal  Binary    EBCDIC  ASCII      '
+say ' ------- ----------- ---------  ------  -----      '
+return
+/*------------------------------------------------------*/
+print_help:
+clrscn
+say
+say '---------------------------------------------------'
+say '   Character Format Representation Table           '
+say '---------------------------------------------------'
+say
+say ' Decimal:  0 - 9                                   '
+say '   You use this base 10 numbering system           '
+say
+say ' Hexadecimal:  0 - 15                              '
+say '   Computers use this base 16 numbering system     '
+say '   0 = 0     1 = 1     2 = 2     3 = 3     4 = 4   '
+say '   5 = 5     6 = 6     7 = 7     8 = 8     9 = 9   '
+say '        10 = A        11 = B          12 = C       '
+say '        13 = D        14 = E          15 = F       '
+say
+say ' Binary: 0 - 1                                     '
+say '   Computers use this base 2 numbering system      '
+say '    where the bit is either off (0) or on (1)      '
+say '     4 BITs  = 1 BYTE                              '
+say '     2 BYTEs = a single alphanumeric or special character'
+say
+say '      Examples:                                    '
+say '       BYTE 0000 = 0 in both Decimal and Hexadecimal'
+say '       BYTE 1111 = Decimal(15) and Hexadecimal(F)   '
+say '       (2) BYTE 0110 0001 is each of these:         '
+say '           - Decimal      097                       '
+say '           - Hexadecimal   61                       '
+say '           - EBCDIC         /   (forward slash)     '
+say '           - ASCII          a   (lowercase alphabetic a) '
+say
+say '      Highest 2 BYTE value                         '
+say '       1111 1111                                   '
+say '       Decimal (255)                               '
+say '       Hexadecimal (FF)                            '
+say
+say '  All computers use binary to store data           '
+say '  process instructions and execute applications.   '
+say
+say '  Hexadecimal makes binary slightly easier         '
+say '  to interpret as opposed to a very long           '
+say '  string of zeroes and ones.                       '
+say
+say '  Computer systems use either EBCDIC or ASCII      '
+say '  format for displaying characters.                '
+say
+say '    Personal Computer (x86 architecture) uses ASCII'
+say '    Mainframe z/OS (zArchitecture)       uses EBCDIC'
+say
+say '   Tip: Set workstation calculator to either       '
+say '        Hex or Binary to investigate               '
+say
+say
+return
+tell_joke:
+say '---------------------------------------------------'
+say '---------------------------------------------------'
+say '---------------------------------------------------'
+say '---------------------------------------------------'
+say '---------------------------------------------------'
+say '---------------------------------------------------'
+say '   There are only 10 types of people in the world: '
+say "   those who understand binary, and those who don't"
+say '                                                   '
+say '   What? - then read about Jokes with numeral bases'
+say '---------------------------------------------------'
+say '   https://en.wikipedia.org/wiki/Mathematical_joke '
+say '---------------------------------------------------'
+say '                                                   '
+say '                                                   '
+return
+/* the following lines are just comment code
+   that might eventually get used to include
+   other ASCII and EBCDIC values
+select
+ when length(ascii) < 2 & length(ebcdic) < 2
+      then print_format = 1
+ when length(ascii) > 1 & length(ebcdic) > 1
+      then print_format = 2
+ when length(ascii) < 2 & length(ebcdic) > 1
+      then print_format = 3
+ when length(ascii) < 1 & length(ebcdic) > 2
+      then print_format = 4
+ when length(ascii) > 2 & length(ebcdic) > 2
+      then print_format = 5
+ otherwise nop
+end
+*/
+
