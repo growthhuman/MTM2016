@@ -1,0 +1,10 @@
+//COPYJAVA JOB 1,NOTIFY=&SYSUID,REGION=0M,MSGLEVEL=(0,0)                JOB01854
+//*******************************************//
+//*  Copy Java source from PDS to Unix file *//
+//*******************************************//
+//COPYJAVA EXEC PGM=BPXBATCH,
+//         PARM='sh cp -R "//source(world)" worldFacts.java'
+//STDOUT   DD PATH='/dev/null'
+//STDERR   DD PATH='/dev/null'
+//CEEDUMP  DD PATH='/dev/null'
+

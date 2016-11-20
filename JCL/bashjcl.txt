@@ -1,0 +1,9 @@
+//BASHJCL  JOB 1,NOTIFY=&SYSUID,REGION=0M,MSGLEVEL=(0,0),TIME=60
+//*******************************************//
+//EXECHILO EXEC PGM=BPXBATCH,
+//         PARM='sh ~/bin/hilow'
+//STDOUT   DD DSNAME=&SYSUID..P2.OUTPUT(#14),DISP=(SHR)
+//STDIN    DD PATH='/z/public/hilow.in',PATHOPTS=(ORDONLY)
+//STDERR   DD DUMMY
+//CEEDUMP  DD DUMMY
+

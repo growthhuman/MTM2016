@@ -1,0 +1,24 @@
+//JOB06    JOB 1                                                        JOB01705
+//S1       EXEC PGM=SORT
+//SORTIN   DD DISP=SHR,DSN=PUBLIC.WORLD.CITIES
+//SORTOUT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSOUT   DD SYSOUT=*
+//SYSIN    DD *
+  OPTION COPY
+  INREC IFTHEN=(WHEN=INIT,
+   PARSE=(%01=(ENDBEFR=C',',FIXLEN=3),
+          %02=(ENDBEFR=C',',FIXLEN=30),
+          %03=(ENDBEFR=C',',FIXLEN=30),
+          %04=(ENDBEFR=C',',FIXLEN=30),
+          %05=(ENDBEFR=C',',FIXLEN=10),
+          %06=(ENDBEFR=C',',FIXLEN=10),
+          %07=(ENDBEFR=C',',FIXLEN=10)),
+   OVERLAY=(1:%03,
+            35:%05))
+//*
+//*   OUTREC PARSE=(%01=(ENDBEFR=C',',FIXLEN=2),
+//*           %02=(ENDBEFR=C',',PAIR=QUOTE,FIXLEN=50),
+//*           %03=(FIXLEN=40)),
+//*   BUILD=(%01,1:%02,5:%03)
+

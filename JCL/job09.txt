@@ -1,0 +1,12 @@
+//JOB09        JOB 1                                                    JOB01735
+//** Compile source and create executable module
+//COMPILE      EXEC IGYWCL
+//COBOL.SYSIN  DD DISP=SHR,DSN=&SYSUID..SOURCE(COBOL2)
+//LKED.SYSLMOD DD DISP=SHR,DSN=&SYSUID..LOAD(COBOL2)
+//****************************************************
+// IF RC = 0 THEN
+//RUN          EXEC PGM=CBL2
+//STEPLIB      DD DISP=SHR,DSN=&SYSUID..LOAD
+//SYSOUT       DD SYSOUT=*
+// ENDIF
+

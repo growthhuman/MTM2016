@@ -1,0 +1,24 @@
+//JOB07    JOB 1                                                        JOB01735
+//S1       EXEC PGM=SORT
+//SORTIN   DD DISP=SHR,DSN=PUBLIC.WORLD.CURRENCY
+//SORTOUT  DD DSN=&&TMP,SPACE=(CYL,1),DISP=(NEW,PASS)
+//SYSPRINT DD SYSOUT=*
+//SYSOUT   DD SYSOUT=*
+//SYSIN    DD *
+  OPTION COPY
+  INREC IFTHEN=(WHEN=INIT,
+   PARSE=(%01=(ENDBEFR=C',',FIXLEN=5),
+          %02=(ENDBEFR=C',',FIXLEN=100),
+          %03=(FIXLEN=100)),
+   OVERLAY=(1:%01,
+            10:%02,
+            145:%03))
+//S2       EXEC PGM=SORT
+//SORTIN   DD DISP=MOD,DSN=&&TMP
+//SORTOUT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSOUT   DD SYSOUT=*
+//SYSIN    DD *
+   SORT FIELDS=(10,100,CH,A)
+//*
+

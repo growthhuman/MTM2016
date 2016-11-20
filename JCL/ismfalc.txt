@@ -1,0 +1,16 @@
+//ISMFALC   JOB  (ACCOUNT),'ISMF',NOTIFY=&SYSUID.
+//*
+//*-------------------------------------------------------------+
+//* ALLOCATE SEQUENTIAL DATA SETS FOR ISMF REPORTS
+//*-------------------------------------------------------------+
+//*
+//STEP1  EXEC  PGM=IEFBR14
+//*
+//DD1     DD DSN=&SYSUID..ISMF.REPORT1.OUTPUT,
+//    DISP=(,CATLG),UNIT=SYSDA,SPACE=(TRK,(1,1)),
+//    DCB=(LRECL=133,RECFM=FBA,DSORG=PS)
+//DD2     DD DSN=&SYSUID..ISMF.REPORT2.OUTPUT,
+//    DISP=(,CATLG),UNIT=SYSDA,SPACE=(TRK,(1,1)),
+//    DCB=(LRECL=133,RECFM=FBA,DSORG=PS)
+/*
+

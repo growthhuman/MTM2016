@@ -1,0 +1,84 @@
+//ASMCL    JOB 1,NOTIFY=&SYSUID                                         00001003
+//ASMPGM   EXEC ASMCL,MBR=ASMPGM                                        00002003
+//C.SYSIN  DD *                                                         00003003
+ASMPGM   TITLE 'contest program'                                        00004003
+ASMPGM   CSECT                                                          00005003
+*--------------------------------------------------------------------*  00006003
+*        register equates                                            *  00007003
+*--------------------------------------------------------------------*  00008003
+R0       EQU   0                       register 0                       00009003
+BASEREG  EQU   12                      base register                    00010003
+SAVEREG  EQU   13                      save area register               00020003
+RETREG   EQU   14                      caller's return address          00030003
+ENTRYREG EQU   15                      entry address                    00040003
+RETCODE  EQU   15                      return code                      00050003
+         EJECT                                                          00060003
+*--------------------------------------------------------------------*  00070003
+*        standard entry setup, save area chaining, establish         *  00080003
+*        base register and addressibility                            *  00090003
+*--------------------------------------------------------------------*  00100003
+         USING ASMPGM,ENTRYREG         establish addressibility         00110003
+         B     SETUP                   branch around eyecatcher         00120003
+         DC    CL8'ASMPGM'             program name                     00130003
+         DC    CL8'&SYSDATE'           program assembled date           00140003
+SETUP    STM   RETREG,BASEREG,12(SAVEREG)  save caller's registers      00150003
+         BALR  BASEREG,R0              establish base register          00160003
+         DROP  ENTRYREG                drop initial base register       00170003
+         USING *,BASEREG               establish addressibilty          00180003
+         LA    ENTRYREG,SAVEAREA       point to this program save area  00190003
+         ST    SAVEREG,4(,ENTRYREG)    save address of caller           00200003
+         ST    ENTRYREG,8(,SAVEREG)    save address of this program     00210003
+         LR    SAVEREG,ENTRYREG        point to this program savearea   00220003
+         EJECT                                                          00230003
+*--------------------------------------------------------------------*  00240003
+*        program body                                                *  00250003
+*--------------------------------------------------------------------*  00260003
+         OPEN  (PRTLINE,OUTPUT)                                         00270003
+         MVC   LINE(26),MSG1                                            00280003
+         PUT   PRTLINE,LINE                                             00290003
+         MVC   LINE,BLANK                                               00300003
+         L     6,=C'abc '                                               00310003
+         L     7,=F'1234'                                               00320003
+LOOPINIT DS    0H                                                       00330003
+         SR    2,2                                                      00340003
+         L     2,=F'10'                                                 00350003
+         L     3,=F'1'                                                  00360003
+LOOP     DS    0H                                                       00370003
+         CVD   3,PACKAREA                                               00380003
+         UNPK  OUT,PACKAREA                                             00390003
+         MVC   LINE(8),OUT                                              00400003
+         MVZ   LINE+7(1),LINE                                           00410003
+         A     3,=F'1'                                                  00420003
+         BCT   2,LOOP                                                   00430003
+         L     8,=C'1234'                                               00440003
+         LA    9,10                                                     00450003
+         CLOSE (PRTLINE)                                                00460003
+*--------------------------------------------------------------------*  00470003
+*        standard exit -  restore caller's registers and             *  00480003
+*        return to caller                                            *  00490003
+*--------------------------------------------------------------------*  00500003
+EXIT     DS    0H                      halfword boundary alignment      00510003
+         L     SAVEREG,4(,SAVEREG)     restore caller's save area addr  00520003
+         L     RETREG,12(,SAVEREG)     restore return address register  00530003
+         LM    R0,BASEREG,20(SAVEREG)  restore all regs. except reg15   00540003
+         BR    RETREG                  return to caller                 00550003
+         EJECT                                                          00560003
+*--------------------------------------------------------------------*  00570003
+*        storage and constant definitions.                           *  00580003
+*        print output definition.                                    *  00590003
+*--------------------------------------------------------------------*  00600003
+LINE     DS    0CL80                                                    00610003
+         DC    C' '                                                     00620003
+         DC    CL79' '                                                  00630003
+PRTLINE  DCB   DSORG=PS,DDNAME=SYSTSPRT,MACRF=PM,                      X00640003
+               RECFM=FB,LRECL=80                                        00650003
+OUT      DC    X'4040404040404040'                                      00690003
+MSG1     DC    CL26'Hi! I can count very fast.'                         00700003
+BLANK    DC    CL80' '                                                  00710003
+PACKAREA DS    CL8                                                      00720003
+SAVEAREA DC    18F'-1'                 register save area               00730003
+         END   ASMPGM                                                   00740003
+//GO      EXEC PGM=ASMPGM                                               00750003
+//STEPLIB DD DSN=&SYSUID..LOAD,DISP=SHR                                 00760003
+//SYSTSPRT DD DSN=&SYSUID..P3.OUTPUT(#07),DISP=SHR                      00770003
+

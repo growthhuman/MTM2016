@@ -1,0 +1,31 @@
+//DSNAMES  JOB  1,NOTIFY=&SYSUID
+//*============================================================
+//ALLOCATE EXEC PGM=IEFBR14
+//*------------------------------------------------------------
+//SEQ      DD DISP=(NEW,CATLG,DELETE),STORCLAS=MTM,
+//          DCB=(RECFM=FB,LRECL=80,DSORG=PS),
+//          SPACE=(TRK,(1,1)),
+//          DSN=&SYSUID..CHARSET.SEQ
+//*------------------------------------------------------------
+//PDS      DD DISP=(NEW,CATLG,DELETE),STORCLAS=MTM,
+//          DCB=(RECFM=FB,LRECL=80,DSORG=PO),
+//          SPACE=(TRK,(1,1,1)),
+//          DSN=&SYSUID..CHARSET.PDS
+//*------------------------------------------------------------
+//PDSE     DD DISP=(NEW,CATLG,DELETE),STORCLAS=MTM,
+//          DCB=(RECFM=FB,LRECL=80,DSORG=PO),DSNTYPE=LIBRARY,
+//          SPACE=(TRK,(1,1,1)),
+//          DSN=&SYSUID..CHARSET.PDSE
+//*============================================================
+//DEFINE   EXEC PGM=IDCAMS
+//*------------------------------------------------------------
+//         EXPORT SYMLIST=(ID)
+//         SET ID=&SYSUID
+//*------------------------------------------------------------
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *,SYMBOLS=JCLONLY
+  DELETE &ID..CHARSET.VSAM CLUSTER
+  SET    MAXCC=0
+  DEFINE CLUSTER(NAME(&ID..CHARSET.VSAM) STORCLAS(MTM) NIXD TRK(1,1))
+/*
+

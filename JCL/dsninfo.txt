@@ -1,0 +1,36 @@
+//DSNINFO  JOB 1,NOTIFY=&SYSUID
+//****************************************//
+//* MASTER CATALOG ALIAS entry           *//
+//* USER   CATALOG Data Set Name entry   *//
+//****************************************//
+//ALIAS    EXEC PGM=IKJEFT01
+//SYSPRINT DD SYSOUT=*
+//SYSTSPRT DD SYSOUT=*
+//SYSTSIN  DD *
+  LISTC ENT('ZOS') ALIAS ALL
+  LISTC ENTRY('ZOS.PUBLIC.HUD.DATA.CSV') ALL
+//****************************************//
+//* VTOC entry for Data Set Name         *//
+//****************************************//
+//LISTVTOC EXEC PGM=IEHLIST
+//SYSPRINT DD SYSOUT=*
+//INVTOC   DD DISP=OLD,UNIT=3390,VOL=SER=MTM004
+//SYSIN    DD *
+  LISTVTOC FORMAT,VOL=3390=MTM004,DSNAME=ZOS.PUBLIC.HUD.DATA.CSV
+//****************************************//
+//* VTOC entry for Data Set Name         *//
+//****************************************//
+//DITVTOC  EXEC PGM=DITTO
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+$$DITTO DVT VOLSER=MTM004,DSNAME=ZOS.PUBLIC.HUD.DATA.CSV
+//****************************************//
+//* VTOC DSCB entry for Data Set Name    *//
+//****************************************//
+//VTOCDSCB EXEC PGM=IKJEFT01
+//SYSPRINT DD SYSOUT=*
+//SYSTSPRT DD SYSOUT=*
+//SYSTSIN  DD *
+  LISTD 'ZOS.PUBLIC.HUD.DATA.CSV' LABEL
+/*
+

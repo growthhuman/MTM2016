@@ -1,0 +1,62 @@
+//IDCAMS   JOB  1                                                       JOB02300
+//DEFINE   EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+ DELETE ???????.VSAM CLUSTER
+ SET    MAXCC=0
+ DEFINE CLUSTER(NAME(???????.VSAM) -
+        VOLUMES(VPWRKA) TRK(1,1) NONINDEXED)
+//**** Write data into VSAM
+// IF RC = 0 THEN
+//IREPRO   EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//INDD     DD *
+This is line one in the VSAM data set
+Line two inclues a number 0123456789
+Observe alphanumeric characters are stored in hexidecimal format
+Use of IDCAMS repro will produce EBCDIC representation
+Use of IDCAMS print will produce the hexidecimal format
+//OUTDD    DD DISP=SHR,DSN=&SYSUID..VSAM
+//SYSIN    DD *
+ REPRO INFILE(INDD) OUTFILE(OUTDD)
+// ENDIF
+//**** Write VSAM data to JOB output queue
+//**** JOB STEPNAME OREPRO and DDNAME OUTDD
+// IF RC = 0 THEN
+//OREPRO   EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//INDD     DD DISP=SHR,DSN=&SYSUID..VSAM
+//OUTDD    DD SYSOUT=*
+//SYSIN    DD *
+ REPRO INFILE(INDD) OUTFILE(OUTDD)
+// ENDIF
+//**** Print VSAM data to JOB output queue
+//**** JOB STEPNAME HEX and DDNAME OUTDD
+// IF RC = 0 THEN
+//HEX      EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//INDD     DD DISP=SHR,DSN=&SYSUID..VSAM
+//OUTDD    DD SYSOUT=*
+//SYSIN    DD *
+ PRINT INFILE(INDD)
+// ENDIF
+//**** Print VSAM data in EBCDIC and CHAR format to JOB output queue
+//**** JOB STEPNAME EBCDIC and DDNAME OUTDD
+// IF RC = 0 THEN
+//EBCDIC   EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//INDD     DD DISP=SHR,DSN=&SYSUID..VSAM
+//OUTDD    DD SYSOUT=*
+//SYSIN    DD *
+ PRINT INFILE(INDD) OUTFILE(OUTDD) CHAR
+// ENDIF
+// IF RC = 0 THEN
+//DONE     EXEC PGM=ICEGENER
+//SYSPRINT DD SYSOUT=*
+//SYSUT1   DD *
+VSAM JCL processed
+//SYSUT2   DD DISP=SHR,DSN=&SYSUID..OUTPUT(VSAMDATA),
+//  DCB=(LRECL=131,RECFM=FBA)
+//SYSIN    DD DUMMY
+// ENDIF
+

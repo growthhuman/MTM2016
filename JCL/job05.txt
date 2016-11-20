@@ -1,0 +1,9 @@
+//JOB05    JOB 1                                                        JOB01705
+//S1       EXEC PGM=SORT
+//SORTIN   DD DSN=&SYSUID..DATA(PRASORT),DISP=SHR
+//SORTOUT  DD SYSOUT=*
+//SYSPRINT DD SYSOUT=*
+//SYSOUT   DD SYSOUT=*
+//SYSIN    DD *
+  SORT FIELDS=(1,4,CH,A)
+

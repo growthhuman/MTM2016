@@ -1,0 +1,12 @@
+//JOB08        JOB 1                                                    JOB01735
+//** Compile source and create executable module
+//COMPILE      EXEC IGYWCL
+//COBOL.SYSIN  DD DISP=SHR,DSN=&SYSUID..SOURCE(COBOL)
+//LKED.SYSLMOD DD DISP=SHR,DSN=&SYSUID..LOADLIB(COBOL)
+//** Execute the module named COBOL in &SYSUID.LOADLIB
+// IF RC = 0 THEN
+//RUN          EXEC PGM=CoBOL
+//STEPLIB      DD DISP=SHR,DSN=&SYSUID..LOADLIB
+//SYSOUT       DD SYSOUT=*
+// ENDIF
+

@@ -1,0 +1,60 @@
+//CPGM   JOB 1,NOTIFY=&SYSUID
+//C      EXEC CBCCL,MBR=CPGM
+//COMPILE.SYSIN DD *
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <wchar.h>
+int main(int argc, char *argv[])
+{
+ //  describe read and write file resources
+ //  --------------------------------------
+ FILE *rstream;
+ FILE *wstream;
+ wchar_t wcs[80];
+ wchar_t *ptr;
+
+ //  open read from file
+ //  -------------------
+ if ((rstream = fopen("DD:@@@@@", "r")) == NULL)
+  {printf("Unable to open @@@@@\n"); exit(1);}
+
+ //  open write to file
+ //  ------------------
+ if ((wstream = fopen("DD:MSGOUT", "w")) == NULL)
+  {printf("Unable to open MSGOUT\n"); exit(1);}
+
+ errno = 0;
+
+ //  read from rstream and write to wstream if ptr has a record
+ //  ----------------------------------------------------------
+ do
+ {ptr = fgetws(wcs, 80, rstream);
+  if (ptr > 0)
+  {fputws(wcs, wstream);}
+ }
+
+ //  checking for end of file or invalid character
+ //  ---------------------------------------------
+ while (ptr > 0);
+  if (ptr == NULL)
+  {if (errno == EILSEQ)
+   {printf("An invalid wide character was encountered.\n"); exit(1);}
+    else if (feof(rstream))
+     printf("end of file reached\n");
+      else perror("read error");
+  }
+
+ //     close the read and write resources
+ // --------------------------------------
+ fclose(rstreem);
+ fclose(wstream);
+}
+/*
+//   IF RC = 0 THEN
+//EXECCPGM  EXEC PGM=CPGM
+//STEPLIB   DD DISP=SHR,DSN=&SYSUID..LOAD(CPGM)
+//MSGIN     DD PATH='/u/public/message',PATHDISP=(KEEP,KEEP)
+//MSGOUT    DD DISP=SHR,DSN=&SYSUID..P3.OUTPUT(#06)
+//   ENDIF
+

@@ -1,0 +1,21 @@
+//ISMFDS    JOB  (ACCOUNT),'ISMF',NOTIFY=&SYSUID.
+//*
+//*-------------------------------------------------------------+
+//* ALLOCATE A SMS MANAGED DATA SET.
+//*
+//* DATACLAS=MTMSEQ WILL ALLOCATE A DATA SET THAT:
+//*  . HAS AN INITIAL SIZE OF 1 TRACK.
+//*  . HAS DCB=(LRECL=80,RECFM=FB,DSORG=PS)
+//*
+//* BEFORE SUBMIT, CHANGE STORAGE_CLASS_NAME TO THE CORRECT STORCLAS.
+//*-------------------------------------------------------------+
+//*
+//STEP1  EXEC  PGM=IEFBR14
+//*
+//DD1     DD DSN=&SYSUID..ISMF.P2.DATASET,
+//    DISP=(,CATLG),
+//    DATACLAS=MTMSEQ,
+//    STORCLAS=STORAGE_CLASS_NAME    <-UPDATE THIS TO CORRECT
+//*                                    STORAGE CLASS.
+/*
+
