@@ -1,0 +1,43 @@
+--*******************************************************               00000200
+--** SELECT all rows & columns FROM table WC.CTYCODE   **               00000300
+--** This table is a list of 2 digit country codes     **               00000400
+--*******************************************************               00000500
+-- SELECT * FROM WC.CTYCODE;                                            00000600
+-- SELECT COUNT(*) FROM WC.CTYCODE;                                     00000709
+--*******************************************************               00001300
+--** SELECT all rows & columns FROM table WC.CURRENCY  **               00001400
+--** This table is a list of world currencies          **               00001500
+--*******************************************************               00001600
+-- SELECT * FROM WC.CURRENCY                                            00001700
+-- SELECT COUNT(*) FROM WC.CURRENCY;                                    00001809
+--*******************************************************               00002200
+--** SELECT all rows & columns FROM table WC.UNIV      **               00002500
+--** This table is a list of universities world wide   **               00002600
+--*******************************************************               00002700
+-- SELECT * FROM WC.UNIV;                                               00002811
+-- SELECT COUNT(*) FROM WC.UNIV;                                        00002909
+--*******************************************************               00003300
+--** Use SQL to list a university from a string that   **               00003600
+--** includes all or part of the university name.      **               00003700
+--** The record also includes 2 digit Country Code     **               00003800
+--** of the university                                 **               00003900
+--*******************************************************               00004000
+-- SELECT *        FROM WC.UNIV                                         00004100
+--   WHERE UNIVERSITY LIKE                                              00004200
+--   '%Universidade Federal de Pernambuco%';                            00004300
+--*******************************************************               00004400
+--** Use SQL to list Country Name using the Country    **               00004500
+--** Code from above university record                 **               00004600
+--*******************************************************               00004700
+-- SELECT COUNTRY  FROM WC.CTYCODE                                      00004800
+--   WHERE COUNTRY_CODE = 'BR';                                         00004900
+--*******************************************************               00005000
+--** Use SQL to list Currency Code and Currency Name   **               00005100
+--** for the country with the above university         **               00005200
+--*******************************************************               00005300
+-- SELECT CURRENCY_CODE, CURRENCY_NAME FROM WC.CURRENCY                 00005400
+--   WHERE COUNTRY = 'Brazil'                                           00005500
+--*******************************************************               00005600
+--SELECT * FROM WC.CTYCODE, WC.CURRENCY;                                00005705
+--*******************************************************               00005805
+

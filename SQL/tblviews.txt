@@ -1,0 +1,16 @@
+--select count(*) from cardusr.client_info;
+--select * from cardusr.client_info fetch first 1 row only;
+--select count(*) from cardusr.sppaytb;
+--select * from cardusr.sppaytb fetch first 1 row only;
+--select count(*) from cardusr.client_info where churn = '1';
+--select count(*) from cardusr.client_info where churn = '0';
+--select count(*) from cardusr.sppaytb where fraud_ver_result = 'Y';
+--select count(*) from cardusr.sppaytb where fraud_ver_result = 'N';
+--select distinct(ACAUREQ_AUREQ_ENV_C_CARDBRND) from cardusr.sppaytb;
+--select distinct(highest_edu) from cardusr.client_info;
+--select distinct(activity_level) from cardusr.client_info;
+--select distinct(gender)         from cardusr.client_info;
+--select distinct(acaureq_aureq_env_m_cmonnm) from cardusr.sppaytb;
+--select count(distinct(acaureq_aureq_env_m_cmonnm))
+--       from cardusr.sppaytb;
+

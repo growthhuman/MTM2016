@@ -1,0 +1,57 @@
+-- ************************************************************
+--select count(*) from cardusr.sppaytb where fraud_ver_result = 'Y';
+-- ************************************************************
+--select acaureq_aureq_tx_dt_ttlamt from cardusr.sppaytb
+--       where fraud_ver_result = 'Y';
+-- ************************************************************
+--select max(ACAUREQ_AUREQ_TX_DT_TTLAMT) from cardusr.sppaytb;
+-- ************************************************************
+--select ACAUREQ_AUREQ_ENV_C_CARDBRND from cardusr.sppaytb
+--       where fraud_ver_result = 'Y';
+-- ************************************************************
+--select distinct(ACAUREQ_AUREQ_ENV_C_CARDBRND) from cardusr.sppaytb
+--       where fraud_ver_result = 'Y';
+-- ************************************************************
+--select count(distinct(ACAUREQ_AUREQ_ENV_C_CARDBRND))
+--       from cardusr.sppaytb
+--       where fraud_ver_result = 'Y';
+-- ************************************************************
+--select distinct(ACAUREQ_AUREQ_ENV_C_CARDBRND) from cardusr.sppaytb
+--       where fraud_ver_result = 'N';
+-- ************************************************************
+--select count(distinct(ACAUREQ_AUREQ_ENV_C_CARDBRND))
+--       from cardusr.sppaytb
+--       where fraud_ver_result = 'N';
+-- ************************************************************
+--select count(cont_id) from cardusr.sppaytb
+--       where fraud_ver_result = 'Y';
+-- ************************************************************
+--select count(distinct cont_id) from cardusr.sppaytb
+--       where fraud_ver_result = 'Y';
+-- ************************************************************
+--select cont_id from  cardusr.sppaytb
+--       where fraud_ver_result = 'Y';
+-- ************************************************************
+--select c.age_years, p.acaureq_aureq_env_m_cmonnm
+--       from cardusr.client_info c,
+--            cardusr.sppaytb p;
+-- ************************************************************
+--select count(*) from cardusr.sppaytb
+--       where acaureq_aureq_env_m_cmonnm = 'Shoes';
+-- ************************************************************
+  select count(distinct cont_id) from cardusr.sppaytb
+         where acaureq_aureq_env_m_cmonnm = 'Shoes';
+-- ************************************************************
+--select c.age_years, p.acaureq_aureq_env_m_cmonnm,
+--       c.cont_id,
+--       p.acaureq_aureq_tx_dt_ttlamt,
+--       p.acaureq_aureq_env_c_cardbrnd
+--       from cardusr.client_info c,
+--            cardusr.sppaytb p
+--       where p.acaureq_aureq_env_c_cardbrnd in
+--        (select acaureq_aureq_env_c_cardbrnd from cardusr.sppaytb
+--         where acaureq_aureq_env_c_cardbrnd = 'Visa Gold')
+--         and c.age_years in
+--        (select age_years from cardusr.client_info
+--         where age_years > '80');
+

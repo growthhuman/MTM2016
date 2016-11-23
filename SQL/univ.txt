@@ -1,0 +1,11 @@
+   select * from wc.ctycode  where country = 'Czech Republic';
+--*******************************************************
+--** This next SQL statement is to list all the        **
+--** universities in the Czech Republic.               **
+--**                                                   **
+--** However, using the 2 digit country code to        **
+--** create the final result-set will not get          **
+--** maximum points for this challenge                 **
+--*******************************************************
+   select * from wc.univ where country_code = 'CZ';
+

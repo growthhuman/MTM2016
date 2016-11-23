@@ -1,0 +1,8 @@
+-- ************************************************************
+-- **                                                        **
+-- **  Place at least one and no more than 5 SQL SELECT      **
+-- **  statements here to provide business insights about    **
+-- **  the data in the client and payment tables.            **
+-- **                                                        **
+-- ************************************************************
+

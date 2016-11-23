@@ -1,0 +1,32 @@
+--
+   select * from wc.favorite;
+--
+-- ***********************************************
+-- * Change favorites to your personal favorites
+-- ***********************************************
+--insert into wc.favorite values(
+-- ***********************************************
+-- * pick 1 color from list:
+-- *  red, yellow, blue, green, orange, or purple
+-- ***********************************************
+--'orange',
+-- ***********************************************
+-- * pick 1 month from list:
+-- *  january, february, march, april, may, june,
+-- *  july, august, september, november, or december
+-- ***********************************************
+--'september',
+-- ***********************************************
+-- * pick 1 favorite sun on the horizon time of day
+-- *  dawn or dusk
+-- ***********************************************
+--'dawn',
+-- ***********************************************
+-- * enter your personal id                      *
+-- ***********************************************
+--'cc#####');
+-- ***********************************************
+--commit;
+-- ***********************************************
+-- select * from wc.favorite where id = 'cc#####';
+
