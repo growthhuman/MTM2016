@@ -1,0 +1,31 @@
+/* REXX */
+clrscn
+say ' Enter Full Data Set Name '
+parse pull dsn
+qualifiers = translate(dsn,' ','.')
+do i = 1 to words(qualifiers)
+ say right(i,2) word(qualifiers, i)
+ select
+  when i = 1 then hlq = word(qualifiers, i)
+  when i = words(qualifiers) then llq = word(qualifiers, i)
+  otherwise nop
+ end
+end
+clrscn
+ say '*************************************************'
+ say '* Alias Information from Master Catalog         *'
+ say '*************************************************'
+ say ' '
+"listx entry('"hlq"') alias "
+ say ' '
+ say '*************************************************'
+ say '* Data Set Information from User Catalog        *'
+ say '*************************************************'
+"listx entry('"dsn"')  "
+ say ' '
+ say '*************************************************'
+ say '* DISK VTOC DSCB entry                          *'
+ say '*************************************************'
+"listx '"dsn"' "
+exit 0
+

@@ -1,0 +1,139 @@
+/* REXX */
+clrscn
+say '              Welcome to the Daily Horoscope '
+say ' '
+say '        The next screen will list a range of dates '
+say ' '
+say '    Please select a number associated with a data range'
+say ' '
+say ' Typically the date range of your birthday would be selected'
+say ' '
+say ' '
+say '                      enter to continue '
+parse pull just_to_freeze_screen_until_enter
+ask_for_selection:
+clrscn
+sa  'When were you born?               '
+say '                                    '
+say ' 1)  January 20   thru   February 18 '
+say ' 2)  February 19  thru   March 20    '
+say ' 3)  March 21     thru   April 19    '
+say ' 4)  April 20     thru   May 20      '
+say ' 5)  May 21       thru   June 20     '
+say ' 6)  June 21      thru   July 22     '
+say ' 7)  July 23      thru   August 22   '
+say ' 8)  August 23    thru   September 22'
+say ' 9)  September 23 thru   October 22  '
+say '10)  October 23   thru   November 21 '
+say '11)  November 22  thru   December 21 '
+say '12)  December 22  thru   January 19  '
+say '                                    '
+say '                                    '
+say 'Select a number from above          '
+say '                                    '
+parse pull number_selected
+clrscn
+ select
+  when number_selected = '1'  then call Aquarius
+  when number_selected = '2'  then call Pisces
+  when number_selected = '3'  then call Aries
+  when number_selected = '4'  then call Taurus
+  when number_selected = '5'  then call Gemini
+  when number_selected = '6'  then call Cancer
+  when number_selected = '7'  then call Leo
+  when number_selected = '8'  then call Virgo
+  when number_selected = '9'  then call Libra
+  when number_selected = '10' then call Scorpio
+  when number_selected = '11' then call Sagittarius
+  when number_selected = '12' then call Capricorn
+  otherwise                        call unknown_selection
+ end
+call get_horoscope
+say ' '
+say ' '
+say 'Do you want to try another Horoscope?'
+say ' '
+say 'enter to select a different data range or no to end'
+parse pull another?
+if another? = 'no' then exit 0
+                   else call ask_for_selection
+Exit 0
+Aqua:
+say 'AQUARIUS'
+say '--------'
+advice  = 'AQUARIUS'
+Pisces:
+say 'PISCES'
+say '------'
+advice  = 'PISCES'
+return
+Aries:
+say 'ARIES'
+say '-----'
+advice  = 'ARIES'
+return
+Taurus:
+say 'TAURUS'
+say '------'
+advice  = 'NOADVICE'
+return
+Gemini:
+say 'GEMINI'
+say '------'
+advice  = 'GEMINI'
+return
+Cancer:
+say 'CANCER'
+say '------'
+advice  = 'CANCER'
+return
+Leo:
+say 'LEO'
+say '---'
+advice  = 'LEO'
+return
+Virgo:
+say 'VIRGO'
+say '-----'
+advice  = 'VIRGO'
+return
+Libra:
+say 'LIBRA'
+say '-----'
+advice  = 'LIBRA'
+return
+Scorpio:
+say 'SCORPIO'
+say '-------'
+advice  = 'SCORPIO'
+return
+Sagittarius:
+say 'SAGITTARIUS'
+say '-----------'
+advice  = 'SAGITTAR'
+return
+Capricorn:
+say 'CAPRICORN'
+say '---------'
+advice  = 'CAPRICOR'
+return
+unknown_selection:
+say ' '
+say 'You selection was unknown'
+say '    Please try again'
+call ask_for_selection_again
+return
+get_horoscope:
+say ' '
+say ' '
+ "ALLOC FI(indd)  DA('ZOS.PUBLIC.DATA("advice")') SHR REUSE"
+ "EXECIO 0 DISKR indd  (OPEN "
+ /*------------------------------------------------------*/
+ /* Read horoscope into memory                           */
+ /*------------------------------------------------------*/
+ "EXECIO * DISKR indd  (STEM reading.   FINIS"
+ do i=1 to reading.0
+  say reading.i
+ end
+return
+

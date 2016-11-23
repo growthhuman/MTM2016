@@ -1,0 +1,74 @@
+/* REXX */
+/******************************************************************/
+/**                                                              **/
+/** Get access to private key, public key, and message           **/
+/**                                                              **/
+/******************************************************************/
+"ALLOC FI(pubkey) DA('ZOS.PUBLIC.SECRET.MESSAGES(PUBLIC)') SHR REUSE"
+"ALLOC FI(prikey) DA('ZOS.PUBLIC.SECRET.MESSAGES(PRIVATE)') SHR REUSE"
+"ALLOC FI(msgin)  DA('ZOS.PUBLIC.SECRET.MESSAGES(TESTMSG)') SHR REUSE"
+"ALLOC FI(msgout) DA(*) SHR REUSE"
+/******************************************************************/
+/**                                                              **/
+/** In the DECRYPT REXX routine, upon successful decryption      **/
+/** of ZOS.PUBLIC.SECRET.MESSAGES(SECRET), uncomment msgout      **/
+/** ALLOC below and comment the msgout ALLOC above               **/
+/**                                                              **/
+/******************************************************************/
+/*  "ALLOC FI(msgout) DA(P3.OUTPUT(#14)) SHR REUSE" */
+/******************************************************************/
+/**                                                              **/
+/** Read private key, public key, and message                    **/
+/**                                                              **/
+/******************************************************************/
+"EXECIO 1 DISKR pubkey (STEM pub. FINIS"
+"EXECIO 1 DISKR prikey (STEM pri. FINIS"
+"EXECIO * DISKR msgin  (STEM msg. FINIS"
+/******************************************************************/
+/**                                                              **/
+/** Write public key as first line of the encrypted message      **/
+/**                                                              **/
+/******************************************************************/
+"EXECIO 0 DISKW msgout (STEM enc_msg. OPEN"
+enc_msg.1 = pub.1
+"EXECIO 1 DISKW msgout (STEM enc_msg. "
+/******************************************************************/
+/**                                                              **/
+/** Parse unencrypted message using private and public           **/
+/** key pair to create encrypted message                         **/
+/**                                                              **/
+/******************************************************************/
+do i=1 to msg.0
+   do j=1 to length(msg.i)
+    letter.j = substr(msg.i,j,1)
+    encrypt.j = translate(letter.j,pri.1,pub.1)
+   end
+call write_encrypted_line
+end
+/******************************************************************/
+/**                                                              **/
+/** Cleanup - close and free files, then exit                    **/
+/**                                                              **/
+/******************************************************************/
+"EXECIO 0 DISKW msgout (FINIS"
+"FREE FI(pubkey)"
+"FREE FI(prikey)"
+"FREE FI(msgin)"
+"FREE FI(msgout)"
+exit 0
+write_encrypted_line:
+/******************************************************************/
+/**                                                              **/
+/** Write encrypted message line                                 **/
+/**                                                              **/
+/******************************************************************/
+charout = ''
+newchar = ''
+  do j=1 to length(msg.i)
+   newchar = encrypt.j
+   charout = charout||newchar
+  end
+enc_msg.1 = charout
+"EXECIO 1 DISKW msgout (STEM enc_msg. "
+return
+
